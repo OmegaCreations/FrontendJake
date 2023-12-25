@@ -18,3 +18,20 @@
   -webkit-background-clip: text;
 }
 
+/* User stats - home page */
+.user_color{
+  border-radius: 50%;
+  height: 60px;
+  width: 60px;
+  border: none;
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.user_color::-webkit-color-swatch-wrapper {
+  padding: 0; 
+}
+.user_color::-webkit-color-swatch {
+  border: none;
+  border-radius: 50%;
+}
