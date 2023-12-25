@@ -7,18 +7,26 @@ function HomePage() {
 
   // FOR TEST PURPOSE
   const loginData = {
-    username: "test",
-    password: "esd",
+    username: "Maks123",
+    password: "Puss",
   }
 
   const [user, setUser]: any = useState(null);
 
   const [userCol, setUserCol]: any = useState("");
 
-  const submitData = () => {
-    // TODO: Send new data to backend
+  const submitData = async () => {
+    // api postmapping url
+    const api_link = "/api/users/save/"+loginData.username;
+    
+    const saveUser = new FormData();
+    saveUser.set("username", loginData.username)
+    saveUser.set("password", loginData.password)
+    saveUser.set("snake_color", userCol)
+    
+    const res = await api.post(api_link, saveUser);
+    console.log("RESPONSE: "+res.data);
   }
-
 
   // Create new axios instance
   const api = axios.create({
