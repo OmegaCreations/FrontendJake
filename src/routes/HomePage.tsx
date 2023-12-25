@@ -1,23 +1,60 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './Layout.css'
+import axios from 'axios';
 
-// Get user props
-function HomePage(props: { user: any }) {
+// Get user props TODO
+function HomePage() {
 
-  const [userCol, setUserCol] = useState("#10b981");
-  const highscores: number[] = [3, 45, 77, 123];
+  // FOR TEST PURPOSE
+  const loginData = {
+    username: "test",
+    password: "esd",
+  }
+
+  const [user, setUser]: any = useState(null);
+
+  const [userCol, setUserCol]: any = useState("");
 
   const submitData = () => {
     // TODO: Send new data to backend
   }
 
+
+  // Create new axios instance
+  const api = axios.create({
+    baseURL: '//localhost:8080',
+    proxy: false
+  });
+
+  // Fetch user data from api
+  const fetchData = async () => {
+    // api mapping url
+    const api_link = "/api/users/"+loginData.username;
+
+    // Await response with login data provided
+    const res = await api.get(api_link, {
+      params: loginData
+    });
+
+    // Setters
+    setUser(res.data);
+    setUserCol(res.data.snake_color);
+  }
+
+
+  // Hooks
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+
   return (
     <>
       <h1>Home Page</h1>
       
-        {!props.user ? 
+        {user ? 
           <>
-            <h2>Welcome {props.user}</h2>
+            <h2>Welcome {user.username}</h2>
             <h3>Here you can find your profile stats.</h3>
 
             {/* User color wheel */}
@@ -37,7 +74,7 @@ function HomePage(props: { user: any }) {
                     Date
                   </th>
                 </tr>
-                {highscores.map((score) => (
+                {user.highscores.map((score: any) => (
                   <tr>
                   <td>
                     {score}
