@@ -3,6 +3,7 @@ import Header from '../template/header/Header'
 
 import { Outlet } from "react-router-dom";
 
+// Web Layout
 function Layout() {
 
   return (

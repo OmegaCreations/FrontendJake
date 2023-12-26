@@ -1,4 +1,3 @@
-import React, { useState } from 'react'
 import ReactDOM from 'react-dom/client'
 import Layout from './routes/Layout.tsx'
 import ErrorPage from './error-page.tsx';
@@ -10,7 +9,11 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import HomePage from './routes/HomePage.tsx';
+import React from 'react';
 
+// Redux
+import { Provider } from 'react-redux';
+import { store } from './state/store.ts';
 
 const router = createBrowserRouter([
   {
@@ -32,6 +35,8 @@ const router = createBrowserRouter([
   
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   </React.StrictMode>,
 )
