@@ -3,20 +3,30 @@ import axios from "axios";
 // Redux
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../state/store";
-import { updateSnakeColor } from "../state/user/userSlice";
+import {
+  updateCoffeesDrank,
+  updateHighscores,
+  updatePassword,
+  updateSnakeColor,
+  updateToken,
+  updateUsername,
+} from "../state/user/userSlice";
+import { useEffect } from "react";
 
 // Get user props TODO
 const HomePage = () => {
   // Redux - user data ============================
-  const username = useSelector((state: RootState) => state.user.username);
-  const password = useSelector((state: RootState) => state.user.password);
-  const snake_color = useSelector((state: RootState) => state.user.snake_color);
-  const highscores = useSelector((state: RootState) => state.user.highscores);
-  const user_status = useSelector((state: RootState) => state.user.isSignedIn);
-
+  const username: string = useSelector(
+    (state: RootState) => state.user.username
+  );
+  const snake_color: string = useSelector(
+    (state: RootState) => state.user.snake_color
+  );
+  const highscores: number[] = useSelector(
+    (state: RootState) => state.user.highscores
+  );
+  const token: string = useSelector((state: RootState) => state.user.token);
   const dispatch = useDispatch();
-
-  // Submit changes ================================
 
   // Create new axios instance
   const api = axios.create({
@@ -24,30 +34,60 @@ const HomePage = () => {
     proxy: false,
   });
 
+  // Get data from API
+
+  useEffect(() => {
+    if (token) {
+      // API postmapping url
+      const api_link = "/api/v1/admin";
+
+      // Create form data to POST
+      const getDataRequest = new FormData();
+      getDataRequest.set("token", token);
+
+      api
+        .get(api_link, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((res) => {
+          // Redux Setters
+          dispatch(updateUsername(res.data.username));
+          dispatch(updateSnakeColor(res.data.snake_color));
+          dispatch(updatePassword(res.data.password));
+          dispatch(updateHighscores(res.data.highscores));
+          dispatch(updateCoffeesDrank(res.data.coffees_drank));
+          dispatch(updateToken(res.data.jwt_token));
+        })
+        .catch((err) => {
+          alert("error: " + err);
+        });
+    }
+  }, [token]);
+
+  // Submit changes ================================
+
   const submitData = async () => {
     // API postmapping url
-    const api_link = "/api/users/save/" + username;
+    const api_link = "/api/v1/auth/save";
 
     // Create form data to POST
     const saveUser = new FormData();
-    saveUser.set("username", username);
-    saveUser.set("password", password);
+    saveUser.set("token", token);
     saveUser.set("snake_color", snake_color);
 
-    const res = await api.post(api_link, saveUser);
-    console.log("RESPONSE: " + res.data);
+    await api.post(api_link, saveUser).catch((err) => alert(err));
   };
 
   return (
     <>
       <h1>Home Page</h1>
 
-      {user_status ? (
+      {useSelector((state: RootState) => state.user.token) ? (
         <>
           <h2>
-            Welcome{" "}
+            Welcome
             <span className="text-bold" style={{ color: snake_color }}>
-              {username}
+              {" " + username}
             </span>
           </h2>
           <h3>Here you can find your profile stats.</h3>

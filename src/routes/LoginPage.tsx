@@ -4,22 +4,14 @@ import axios from "axios";
 
 // Redux imports
 import { useDispatch, useSelector } from "react-redux";
-import {
-  updateCoffeesDrank,
-  updateHighscores,
-  updatePassword,
-  updateSnakeColor,
-  updateStatus,
-  updateUsername,
-} from "../state/user/userSlice";
+import { updateRefreshToken, updateToken } from "../state/user/userSlice";
 import { RootState } from "../state/store";
 
 const LoginPage = () => {
+  // Form data
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  // Redux
-  const user_status = useSelector((state: RootState) => state.user.isSignedIn);
   const dispatch = useDispatch();
 
   // Create new axios instance
@@ -28,8 +20,8 @@ const LoginPage = () => {
     proxy: false,
   });
 
-  // Fetch user data from api
-  const fetchData = async (
+  // Authorize user and get token
+  const authorizeUser = async (
     e: React.FormEvent<HTMLFormElement>,
     username: string,
     password: string
@@ -38,31 +30,31 @@ const LoginPage = () => {
     e.preventDefault();
 
     // api mapping url
-    const api_link = "/api/users/" + username;
+    const api_link = "/api/v1/auth/login";
 
     // Await response with login data provided
-    const res = await api.get(api_link, {
-      params: {
-        username: username,
-        password: password,
-      },
-    });
-
-    // Redux Setters
-    dispatch(updateUsername(res.data.username));
-    dispatch(updateSnakeColor(res.data.snake_color));
-    dispatch(updatePassword(res.data.password));
-    dispatch(updateHighscores(res.data.highscores));
-    dispatch(updateCoffeesDrank(res.data.coffees_drank));
-    dispatch(updateStatus(true));
+    const authUser = new FormData();
+    authUser.set("username", username);
+    authUser.set("password", password);
+    await api
+      .post(api_link, authUser)
+      .then((res) => {
+        // Save tokens
+        localStorage.setItem("token", res.data.token); // Save token to local storage
+        dispatch(updateToken(res.data.token));
+        dispatch(updateRefreshToken(res.data.refreshToken));
+      })
+      .catch((err) => {
+        alert("invalid username or password!: " + err);
+      });
   };
 
-  if (!user_status)
+  if (!useSelector((state: RootState) => state.user.token))
     return (
       <div className="my-24 pb-12 flex flex-col gap-20">
         <h1>Provide your credentials to Log In</h1>
         <form
-          onSubmit={(e) => fetchData(e, username, password)}
+          onSubmit={(e) => authorizeUser(e, username, password)}
           className=" w-full rounded px-8 py-12"
         >
           <div className="mb-8">

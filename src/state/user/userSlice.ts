@@ -7,7 +7,8 @@ interface UserState {
   highscores: number[]; // List of highscores
   coffees_drank: number; // List of total coffees drank
 
-  isSignedIn: boolean;
+  token: string;
+  refreshToken: string;
 }
 
 const initialState: UserState = {
@@ -17,7 +18,8 @@ const initialState: UserState = {
   highscores: [0, 0, 0],
   coffees_drank: 0,
 
-  isSignedIn: false,
+  token: "",
+  refreshToken: "",
 };
 
 const userSlice = createSlice({
@@ -39,8 +41,12 @@ const userSlice = createSlice({
     updateCoffeesDrank: (state, action: PayloadAction<number>) => {
       state.coffees_drank = action.payload;
     },
-    updateStatus: (state, action: PayloadAction<boolean>) => {
-      state.isSignedIn = action.payload;
+    updateToken: (state, action: PayloadAction<string>) => {
+      state.token = action.payload;
+    },
+    updateRefreshToken: (state, action: PayloadAction<string>) => {
+      state.refreshToken = action.payload;
+      localStorage.setItem("refreshToken", JSON.stringify(action.payload));
     },
   },
 });
@@ -52,5 +58,6 @@ export const {
   updateCoffeesDrank,
   updateHighscores,
   updatePassword,
-  updateStatus,
+  updateToken,
+  updateRefreshToken,
 } = userSlice.actions;
