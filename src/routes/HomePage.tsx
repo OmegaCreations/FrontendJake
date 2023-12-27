@@ -35,11 +35,11 @@ const HomePage = () => {
   });
 
   // Get data from API
-
+  // TODO: ASK FOR DATA ONCE IF NOT GOT IT OR MAKE REQUEST IN LAYOUT!!!!!
   useEffect(() => {
     if (token) {
       // API postmapping url
-      const api_link = "/api/v1/admin";
+      const api_link = "/api/v1/user";
 
       // Create form data to POST
       const getDataRequest = new FormData();
@@ -59,7 +59,9 @@ const HomePage = () => {
           dispatch(updateToken(res.data.jwt_token));
         })
         .catch((err) => {
-          alert("error: " + err);
+          // token expired -> forbidden or network error
+          console.log("error: " + err);
+          localStorage.clear(); // clear local storage on 403 err
         });
     }
   }, [token]);

@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateRefreshToken, updateToken } from "../state/user/userSlice";
 import { RootState } from "../state/store";
 
-const LoginPage = () => {
+const RegisterPage = () => {
   // Form data
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -21,7 +21,7 @@ const LoginPage = () => {
   });
 
   // Authorize user and get token
-  const authorizeUser = async (
+  const registerUser = async (
     e: React.FormEvent<HTMLFormElement>,
     username: string,
     password: string
@@ -30,7 +30,7 @@ const LoginPage = () => {
     e.preventDefault();
 
     // api mapping url
-    const api_link = "/api/v1/auth/login";
+    const api_link = "/api/v1/auth/signup";
 
     // Await response with login data provided
     const authUser = new FormData();
@@ -40,22 +40,19 @@ const LoginPage = () => {
     await api
       .post(api_link, authUser)
       .then((res) => {
-        // Save tokens
-        localStorage.setItem("token", res.data.token); // Save token to local storage
-        dispatch(updateToken(res.data.token));
-        dispatch(updateRefreshToken(res.data.refreshToken));
+        if (!res.data) alert("error");
       })
       .catch((err) => {
-        alert("invalid username or password!: " + err);
+        alert("invalid credentials!: " + err);
       });
   };
 
   if (!useSelector((state: RootState) => state.user.token))
     return (
       <div className="my-24 pb-12 flex flex-col gap-20">
-        <h1>Provide your credentials to Log In</h1>
+        <h1>Provide your new credentials.</h1>
         <form
-          onSubmit={(e) => authorizeUser(e, username, password)}
+          onSubmit={(e) => registerUser(e, username, password)}
           className=" w-full rounded px-8 py-12"
         >
           <div className="mb-8">
@@ -104,4 +101,4 @@ const LoginPage = () => {
   else return <>You are already logged in!</>;
 };
 
-export default LoginPage;
+export default RegisterPage;

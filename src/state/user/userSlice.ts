@@ -15,7 +15,7 @@ const initialState: UserState = {
   username: "",
   password: "",
   snake_color: "#00FF00",
-  highscores: [0, 0, 0],
+  highscores: [],
   coffees_drank: 0,
 
   token: "",

@@ -5,6 +5,7 @@ import { Outlet } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { updateToken } from "../state/user/userSlice";
 import { useEffect } from "react";
+import { RootState } from "../state/store";
 
 // Web Layout
 function Layout() {
