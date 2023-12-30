@@ -16,7 +16,7 @@ const Layout = () => {
   const retrieveData = () => {
     if (token) return;
     const tokenString = localStorage.getItem("token"); // get token from local storage
-    dispatch(updateToken(tokenString)); // Update token for this session
+    dispatch(updateToken(tokenString ?? "")); // Update token for this session
   };
 
   // Hooks

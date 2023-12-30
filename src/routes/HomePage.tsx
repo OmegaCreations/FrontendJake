@@ -66,7 +66,7 @@ const HomePage = () => {
           localStorage.clear(); // clear local storage on 403 err
         });
     }
-  }, [token, dataFetched, dispatch]);
+  }, [token, dataFetched, dispatch, api]);
 
   // Submit changes ================================
 

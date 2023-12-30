@@ -3,16 +3,13 @@ import "./Layout.css";
 import axios from "axios";
 
 // Redux imports
-import { useDispatch, useSelector } from "react-redux";
-import { updateRefreshToken, updateToken } from "../state/user/userSlice";
+import { useSelector } from "react-redux";
 import { RootState } from "../state/store";
 
 const RegisterPage = () => {
   // Form data
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
-  const dispatch = useDispatch();
 
   // Create new axios instance
   const api = axios.create({
@@ -92,7 +89,7 @@ const RegisterPage = () => {
               type="submit"
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             >
-              Log In
+              Sign up
             </button>
           </div>
         </form>

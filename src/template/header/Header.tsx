@@ -6,6 +6,9 @@ import { RootState } from "../../state/store";
 const Header: React.FC = () => {
   const dispatch = useDispatch();
   const token: string = useSelector((state: RootState) => state.user.token);
+  const coffees_drank: number = useSelector(
+    (state: RootState) => state.user.coffees_drank
+  );
 
   const logOut = () => {
     localStorage.clear();
@@ -14,11 +17,14 @@ const Header: React.FC = () => {
 
   return (
     <>
-      <header className="container flex h-12">
-        <img src="" className="" />
+      <header className="container flex justify-center gap-56 py-6">
         <ul className="flex gap-12">
+          <img src="" className="" />
           <li>
             <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/laderboard">Snake Leaders</Link>
           </li>
           {!token ? (
             <>
@@ -32,6 +38,12 @@ const Header: React.FC = () => {
           ) : (
             <>
               <li>
+                <Link to="/shop">Ssshop</Link>
+              </li>
+              <li>
+                <Link to="/inventory">Inventory</Link>
+              </li>
+              <li>
                 <a href="#" onClick={() => logOut()}>
                   Logout
                 </a>
@@ -39,6 +51,8 @@ const Header: React.FC = () => {
             </>
           )}
         </ul>
+
+        {token ? <span className="">{coffees_drank} Coffees</span> : <></>}
       </header>
     </>
   );

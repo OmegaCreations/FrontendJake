@@ -9,7 +9,7 @@
   flex-direction: column;
 }
 
- h1 {
+h1 {
   font-size: 70px !important;
   font-weight: 600 !important;
   background-image: linear-gradient(to left, #553c9a, #b393d3);
@@ -19,7 +19,7 @@
 }
 
 /* User stats - home page */
-.user_color{
+.user_color {
   border-radius: 50%;
   height: 60px;
   width: 60px;
@@ -29,7 +29,7 @@
 }
 
 .user_color::-webkit-color-swatch-wrapper {
-  padding: 0; 
+  padding: 0;
 }
 .user_color::-webkit-color-swatch {
   border: none;

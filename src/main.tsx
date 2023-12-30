@@ -12,6 +12,7 @@ import React from "react";
 import { Provider } from "react-redux";
 import { store } from "./state/store.ts";
 import RegisterPage from "./routes/RegisterPage.tsx";
+import ShopPage from "./routes/ShopPage.tsx";
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
       {
         path: "/signup",
         element: <RegisterPage />,
+      },
+      {
+        path: "/shop",
+        element: <ShopPage />,
       },
       {
         path: "/",
