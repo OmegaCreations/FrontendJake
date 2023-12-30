@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import { RootState } from "../state/store";
 
 // Web Layout
-function Layout() {
+const Layout = () => {
   const dispatch = useDispatch();
   const token: string = useSelector((state: RootState) => state.user.token);
 
@@ -30,6 +30,6 @@ function Layout() {
       <Outlet />
     </>
   );
-}
+};
 
 export default Layout;

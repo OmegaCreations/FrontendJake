@@ -11,7 +11,7 @@ import {
   updateToken,
   updateUsername,
 } from "../state/user/userSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 // Get user props TODO
 const HomePage = () => {
@@ -35,9 +35,9 @@ const HomePage = () => {
   });
 
   // Get data from API
-  // TODO: ASK FOR DATA ONCE IF NOT GOT IT OR MAKE REQUEST IN LAYOUT!!!!!
+  const [dataFetched, setDataFetched] = useState(false);
   useEffect(() => {
-    if (token) {
+    if (token && !dataFetched) {
       // API postmapping url
       const api_link = "/api/v1/user";
 
@@ -57,6 +57,8 @@ const HomePage = () => {
           dispatch(updateHighscores(res.data.highscores));
           dispatch(updateCoffeesDrank(res.data.coffees_drank));
           dispatch(updateToken(res.data.jwt_token));
+
+          setDataFetched(true);
         })
         .catch((err) => {
           // token expired -> forbidden or network error
@@ -64,7 +66,7 @@ const HomePage = () => {
           localStorage.clear(); // clear local storage on 403 err
         });
     }
-  }, [token]);
+  }, [token, dataFetched, dispatch]);
 
   // Submit changes ================================
 
