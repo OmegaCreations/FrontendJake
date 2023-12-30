@@ -1,5 +1,10 @@
 # Jake(Java snake)
 
+Backend repo: https://github.com/OmegaCreations/BackendJake
+Software repo: https://github.com/OmegaCreations/Jake-Java-Snake-
+
+Youtube showcase video: https://www.youtube.com/watch?v=xJxztUFADpQ
+
 Stack used:
 - React/Redux
 - TypeScript
